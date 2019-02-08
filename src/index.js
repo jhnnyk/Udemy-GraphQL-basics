@@ -1,10 +1,38 @@
-import myCurrentLocation, { getGreeting, message, myName } from './myModule';
-import addTwoNumbers, { subtractNumbers } from './math';
+import { GraphQLServer } from 'graphql-yoga';
 
-console.log(message);
-console.log(myName);
-console.log(myCurrentLocation);
-console.log(getGreeting('Travis'));
+// Type definitions (schema)
+const typeDefs = `
+  type Query {
+    hello: String!
+    name: String!
+    location: String!
+    bio: String!
+  }
+`;
 
-console.log(addTwoNumbers(5, 10));
-console.log(subtractNumbers(20, 12));
+// Resolvers
+const resolvers = {
+  Query: {
+    hello() {
+      return 'This is my first query! Booyah!!';
+    },
+    name() {
+      return 'Johnny K!';
+    },
+    location() {
+      return 'Evergreen CO';
+    },
+    bio() {
+      return 'husband, dad, ultrarunner, developer';
+    }
+  }
+};
+
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers
+});
+
+server.start(() => {
+  console.log('The server is up!');
+});
